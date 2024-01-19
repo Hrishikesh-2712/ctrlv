@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+    <title>Ctrl + V</title>
+</head>
+<body>
+    <form method="GET" action="/colab/">
+        <a class="colab" href="/colab/yourcodehere">Live Collaboration</a>
+        <input type="text" label='room code'>
+    </form>
+    
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+    {% if messages %}
+        <div class="messages">
+    {% for message in messages %}
+        <div class="message"> {{ message }}</div>
+    {% endfor %}
+        </div>
+    {% endif %}
+    </form>
+    
+      <!-- "one user can edit at a time because  Operational Transformation algorithm has not been implemented yet" -->
+
+ 
+<!--div class="send-container">
+        
+        <input required type="text" name="topic" spellcheck="false"
+ id="topic" >
+      <textarea id="text" name="text" spellcheck="false" placeholder="paste here..."></textarea>
+      <!-- <button type="submit" id="submit" >Submit</button> ->
+      <div class="expire-block">
+        <label for="expire-date">Delete in</label>
+        <select class="type" name="date" id="expire-date">
+            <option>one week</option>
+            <option>one month</option>
+            <option>one year</option>
+            <option>eternity</option>
+          </select>
+      </div>
+</div-->
+    
+  <!--script defer>
+    ws = new WebSocket('wss://ctrlv.jacko5.repl.co/ws/hi/');
+
+    text = document.querySelector('textarea#text')
+    var t=setTimeout(()=>{
+            
+        },10)
+    ws.onmessage=(data)=>{
+        clearTimeout(t)
+        text.setAttribute('readonly','readonly')
+        data = JSON.parse(data.data)
+        console.log(data)
+        // text.value = JSON.parse(data.data)
+        if(data.message !=null){
+            text.value = data.message
+        }
+        t = setTimeout(()=>{
+            text.removeAttribute('readonly')
+        },2500)
+        
+    }
+    
+    // text.onchange = (event)=>{
+    //     sync()
+    // }
+    
+    // text.onkeyup = (event)=>{
+    //     if(event.key == 'Backspace' || event.key == 'Delete')
+    //     sync()
+    // }
+    
+    text.onkeyup = (event)=>{
+        
+        sync()
+    }
+            
+    function sync(){
+         ws.send(JSON.stringify({'message':text.value}))
+    
+    }
+
+
+      function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function demo(t) {
+        // console.log(`Waiting ${i} seconds...`);
+        await sleep(t * 1000);
+    
+}
+
+demo(1);
+</script-->
+    <script>
+        document.querySelector("a.colab").onclick = (e)=>{
+    e.preventDefault()
+    window.open(`https://${window.location.host}/colab/${document.querySelector('input[label="room code"]').value}`)
+}
+    </script>
+</body>
+</html>
+
+<!--  -->

@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+    <link rel="stylesheet" href="{% static 'colab.css' %}">
+    <title>Ctrl + V</title>
+</head>
+<body>  
+      <!-- "one user can edit at a time because  Operational Transformation algorithm has not been implemented yet" -->
+
+ 
+<div class="send-container">
+        
+        <input required type="text" name="topic" spellcheck="false"
+ id="topic" >
+      <textarea id="text" name="text" spellcheck="false" placeholder="paste here..."></textarea>
+      <!--button type="submit" id="submit" >Submit</button> -->
+      <div class="expire-block">
+        <label for="expire-date">Delete in</label>
+        <select class="type" name="date" id="expire-date">
+            <option>one week</option>
+            <option>one month</option>
+            <option>one year</option>
+            <option>eternity</option>
+          </select>
+      </div>
+</div-->
+    
+  <script defer>
+    const id = window.location.pathname.split('/')[2]
+    ws = new WebSocket(`wss://ctrlv.jacko5.repl.co/ws/${id}/`);
+
+    text = document.querySelector('textarea#text')
+    var t=setTimeout(()=>{
+            
+        },10)
+    ws.onmessage=(data)=>{
+        clearTimeout(t)
+        text.setAttribute('readonly','readonly')
+        text.classList.add('readonly')
+        data = JSON.parse(data.data)
+        // text.value = JSON.parse(data.data)
+        if(data.fetch !=null && text.value.length>0){
+            
+            ws.send(JSON.stringify({'message':text.value}))
+        }
+        if(data.message !=null){
+            text.value = data.message
+        }
+        t = setTimeout(()=>{
+            text.removeAttribute('readonly')
+            text.classList.remove('readonly')
+        },2500)
+        
+    }
+    
+    // text.onchange = (event)=>{
+    //     sync()
+    // }
+    
+    // text.onkeyup = (event)=>{
+    //     if(event.key == 'Backspace' || event.key == 'Delete')
+    //     sync()
+    // }
+    
+    text.onkeyup = (event)=>{
+        
+        sync()
+    }
+      ws.onclose = ()=>{
+    alert('disconnected :/')
+}
+            
+    function sync(){
+         ws.send(JSON.stringify({'message':text.value}))
+    
+    }
+
+
+      function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function demo(t) {
+        // console.log(`Waiting ${i} seconds...`);
+        await sleep(t * 1000);
+    
+}
+
+demo(1);
+</script>
+</body>
+</html>
+
+<!--  -->
