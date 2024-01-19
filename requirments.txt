@@ -13,6 +13,8 @@ django-js-asset
 hyperlink
 idna
 incremental
+psycopg
+psycopg2
 psycopg2-binary
 pyasn1
 pyasn1-modules
