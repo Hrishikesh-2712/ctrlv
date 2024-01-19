@@ -7,7 +7,7 @@ channels
 constantly
 cryptography
 daphne
-Django
+django
 django-ckeditor
 django-js-asset
 hyperlink
